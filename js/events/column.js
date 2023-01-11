@@ -15,6 +15,7 @@ import {
   getElem,
 } from "../utils/utils.js";
 import { store } from "../init.js";
+import { cancel, threeBars } from "../components/svg.js";
 
 const changeColumnNameEventHandler = (e) => {
   if (e.target.className === "column-header-title") {
@@ -115,11 +116,21 @@ const cardRemoveClickEventHandler = (e) => {
     const cardNode = getTargetParentByClassName(e.target, "card-wrapper");
     const modalWrapperEl = getElem(".modal-wrapper");
     const bodyEl = document.body;
+    addClassToAllBtns();
     cardNode.classList.add("focused");
     cardNode.classList.add("clicked");
     modalWrapperEl.classList.add("active");
     bodyEl.classList.add("modal-display");
   }
+};
+
+const addClassToAllBtns = () => {
+  const addBtns = getElems(".column-add-btn");
+  const removeBtns = getElems(".column-remove-btn");
+  const rightBtn = getElem(".chat-menu-btn");
+  rightBtn.classList.add("fadeout-col");
+  addBtns.forEach((ele) => ele.classList.add("fadeout-col"));
+  removeBtns.forEach((ele) => ele.classList.add("fadeout-col"));
 };
 
 const cardModificationEventHandler = (e) => {
@@ -210,10 +221,21 @@ const columnEvent = () => {
   columns.addEventListener("click", addWholeColumnClickEventHandler);
 };
 
+const logSgvChange = () => {
+  const rightBtn = getElem(".chat-menu-btn");
+  if (rightBtn.getAttribute("class").includes("hidden")) {
+    rightBtn.innerHTML = cancel();
+  } else {
+    rightBtn.innerHTML = threeBars();
+  }
+};
+
 const logBtnClickEvent = () => {
   getElem(".chat-menu-btn").addEventListener("click", () => {
     getElem(".log-wrapper").classList.toggle("hidden");
+    getElem(".log-wrapper").classList.toggle("disappear");
     getElem(".chat-menu-btn").classList.toggle("hidden");
+    logSgvChange();
   });
 };
 

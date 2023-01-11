@@ -2,6 +2,7 @@ import {
   checkLogCount,
   getTargetParentByClassName,
   getElem,
+  getElems,
 } from "../utils/utils.js";
 import { log } from "../components/log.js";
 
@@ -10,6 +11,15 @@ const modalEvent = () => {
   const modalRemoveBtnEl = getElem(".modal-remove-btn");
   modalRemoveBtnEl.addEventListener("click", removeBtnClickEventHandler);
   modalCancelBtnEl.addEventListener("click", cancelBtnClickEventHandler);
+};
+
+const columnBtnsBackgroundRemove = () => {
+  const addBtns = getElems(".column-add-btn");
+  const removeBtns = getElems(".column-remove-btn");
+  const rightBtn = getElem(".chat-menu-btn");
+  rightBtn.classList.remove("fadeout-col");
+  addBtns.forEach((ele) => ele.classList.remove("fadeout-col"));
+  removeBtns.forEach((ele) => ele.classList.remove("fadeout-col"));
 };
 
 const removeBtnClickEventHandler = () => {
@@ -29,6 +39,7 @@ const removeBtnClickEventHandler = () => {
   bodyEl.classList.remove("modal-display");
   focusedCard.remove();
   modalWrapperEl.classList.remove("active");
+  columnBtnsBackgroundRemove();
 
   checkLogCount(columnWrapper);
 };
@@ -40,6 +51,8 @@ const cancelBtnClickEventHandler = () => {
   modalWrapperEl.classList.remove("active");
   bodyEl.classList.remove("modal-display");
   wrapperEl.classList.remove("clicked");
+  wrapperEl.classList.remove("focused");
+  columnBtnsBackgroundRemove();
 };
 
-export { modalEvent, removeBtnClickEventHandler, cancelBtnClickEventHandler };
+export { modalEvent };
