@@ -1,9 +1,13 @@
+/* Body */
+
 body {
   background-color: #f5f5f7;
   position: relative;
   margin: 0;
   height: 886px;
 }
+
+/* Header */
 
 header {
   width: 100%;
@@ -20,6 +24,8 @@ header {
 .header-wrapper > h1 {
   font-size: 32px;
 }
+
+/* Columns */
 
 .columns-wrapper {
   display: flex;
@@ -76,59 +82,55 @@ button:hover {
 }
 
 .chat-menu-btn {
-  background-image: url("./assets/right_menu.svg");
   height: 13px;
   width: 13px;
   z-index: 2;
-}
-
-.column-add-btn {
-  background-image: url("./assets/normal_add_btn.svg");
-  height: 13px;
-  width: 13px;
-  color: red;
+  background-color: #f5f5f7;
 }
 
 .chat-menu-btn.hidden {
-  background-image: url("./assets/normal_cancel_btn.svg");
+  background-color: #ffffff;
 }
 
-.column-add-btn:hover {
-  background-image: url("./assets/add_btn_active.svg");
+.column-add-btn {
+  height: 15px;
+  width: 15px;
+  background-color: #f5f5f7;
+  padding: 0;
+}
+
+.column-add-btn:hover path {
+  fill: #0075de;
 }
 
 .column-add-btn.active {
-  background-image: url("./assets/add_btn_active.svg");
+  fill: #0075de;
 }
 
 .column-remove-btn {
-  background-image: url("./assets/normal_cancel_btn.svg");
-  width: 11px;
-  height: 11px;
+  height: 15px;
+  width: 15px;
+  background-color: #f5f5f7;
 }
 
-.log-close-btn {
-  background-image: url("./assets/normal_cancel_btn.svg");
-  width: 11px;
-  height: 11px;
-  background-color: #f5f5f7;
+.column-remove-btn:hover path {
+  fill: red;
 }
 
 .card-remove-btn {
-  background-image: url("./assets/normal_cancel_btn.svg");
-  width: 11px;
-  height: 11px;
-  background-color: #f5f5f7;
+  width: 15px;
+  height: 15px;
+  background-color: white;
 }
 
-.card-remove-btn:hover {
-  background-image: url("./assets/close_btn_active.svg");
+.card-remove-btn:hover path {
+  fill: red;
 }
 
 .card-edit-btn {
   width: 20px;
   height: 20px;
-  background-color: #f5f5f7;
+  background-color: #fff;
 }
 
 .card-wrapper {
@@ -238,6 +240,29 @@ button:hover {
   border: none;
 }
 
+/* Log */
+
+@keyframes fadeInRight {
+  0% {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translateZ(0);
+  }
+}
+
+@keyframes fadeOutLeft {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
 .log-wrapper {
   position: absolute;
   top: 0;
@@ -252,10 +277,17 @@ button:hover {
   z-index: 1;
   background-color: white;
   display: block;
+  animation: fadeInRight 1s;
 }
 
 .log-wrapper.hidden {
-  display: none;
+  /* display: none; */
+  opacity: 0;
+}
+
+.log-wrapper.disappear {
+  animation: fadeOutLeft 1s;
+  animation-fill-mode: forwards;
 }
 
 .log-card-wrapper {
@@ -289,7 +321,13 @@ button:hover {
   margin: 5px;
 }
 
+/* Modal */
+
 .modal-display {
+  background-color: #818183;
+}
+
+.fadeout-col {
   background-color: #818183;
 }
 
@@ -342,6 +380,8 @@ button:hover {
   border-radius: 2px;
   background-color: #0075de;
 }
+
+/* Fav */
 
 .add-column-btn {
   position: absolute;
