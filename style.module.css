@@ -127,6 +127,14 @@ button:hover {
   fill: red;
 }
 
+.card-remove-btn.clicked {
+  background-color: #ffeeec;
+}
+
+.card-remove-btn.fadeout-card {
+  background-color: #818183;
+}
+
 .card-edit-btn {
   width: 20px;
   height: 20px;
@@ -135,7 +143,6 @@ button:hover {
 
 .card-wrapper {
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
   width: 268px;
   height: 76px;
@@ -149,6 +156,20 @@ button:hover {
 .card-wrapper.clicked {
   border: 1px solid red;
   background-color: #ffeeec;
+}
+
+.card-wrapper.fadeout-card {
+  background-color: #818183;
+}
+
+.card-left-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-right-wrapper div {
+  display: flex;
+  flex-direction: column;
 }
 
 .card-header-wrapper {
