@@ -17,6 +17,7 @@ import {
 } from "../utils/utils.js";
 import { store } from "../init.js";
 import { cancel, threeBars } from "../components/svg.js";
+import { inputFieldsValidator } from "../utils/validations.js";
 
 const changeColumnNameEventHandler = (e) => {
   if (e.target.className === "column-header-title") {
@@ -51,13 +52,7 @@ const cardAddBtnClickEventHandler = (e) => {
       .map((v) => v.value);
     newCardInfor.title = newInputData[0];
     newCardInfor.text = newInputData[1];
-    if (
-      //이거 validation으로 빼자.
-      newCardInfor.title === null ||
-      newCardInfor.title === "" ||
-      newCardInfor.text === null ||
-      newCardInfor.text === ""
-    ) {
+    if (!inputFieldsValidator(newCardInfor)) {
       getElems(".column-add-btn", targetColumn).forEach((v) => {
         if (v.classList.contains("active")) v.classList.remove("active");
       });
