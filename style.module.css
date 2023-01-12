@@ -140,6 +140,9 @@ button:hover {
   height: 20px;
   background-color: #fff;
 }
+.card-edit-btn.clicked {
+  background-color: #ffeeec;
+}
 
 .card-wrapper {
   display: flex;

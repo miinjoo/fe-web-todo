@@ -78,6 +78,29 @@ const checkLogCount = (targetColumn, columnId) => {
   targetChild.innerHTML = activeListNum;
 };
 
+const cardsBackgroundColorToggle = () => {
+  const columnsEl = getElem(".columns-wrapper");
+  const cards = getElems(".card-wrapper", columnsEl);
+  const cardBtns = getElems(".card-remove-btn");
+  cardBtns.concat(getElems(".card-fix-btn"));
+  cards.forEach((card) => {
+    if (!String(card.getAttribute("class")).includes("clicked")) {
+      card.classList.toggle("fadeout-card");
+    }
+  });
+  cardBtns.forEach((btn) => {
+    if (
+      String(
+        getTargetParentByClassName(btn, "card-wrapper")
+          .getAttribute("class")
+          .includes("fadeout-card")
+      )
+    ) {
+      btn.classList.toggle("fadeout-card");
+    }
+  });
+};
+
 export {
   getTargetParentByClassName,
   deleteNode,
@@ -85,4 +108,5 @@ export {
   checkLogCount,
   getElem,
   getElems,
+  cardsBackgroundColorToggle,
 };

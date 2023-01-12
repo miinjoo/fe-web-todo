@@ -13,6 +13,7 @@ import {
   checkLogCount,
   getElems,
   getElem,
+  cardsBackgroundColorToggle,
 } from "../utils/utils.js";
 import { store } from "../init.js";
 import { cancel, threeBars } from "../components/svg.js";
@@ -115,12 +116,15 @@ const cardRemoveClickEventHandler = (e) => {
   if (e.target.className === "card-remove-btn") {
     const cardNode = getTargetParentByClassName(e.target, "card-wrapper");
     const modalWrapperEl = getElem(".modal-wrapper");
+    e.target.classList.toggle("clicked");
+    e.target.nextElementSibling.classList.toggle("clicked");
     const bodyEl = document.body;
     addClassToAllBtns();
     cardNode.classList.add("focused");
     cardNode.classList.add("clicked");
     modalWrapperEl.classList.add("active");
     bodyEl.classList.add("modal-display");
+    cardsBackgroundColorToggle();
   }
 };
 
@@ -134,9 +138,10 @@ const addClassToAllBtns = () => {
 };
 
 const cardModificationEventHandler = (e) => {
-  if (e.target.className === "card-wrapper") {
-    e.target.innerHTML = fixCardWrapper({ title: "", text: "" });
-    e.target.classList.add("fixing");
+  if (e.target.className === "card-edit-btn") {
+    const targetCard = getTargetParentByClassName(e.target, "card-wrapper");
+    targetCard.innerHTML = fixCardWrapper({ title: "", text: "" });
+    targetCard.classList.add("fixing");
   }
 };
 
@@ -159,7 +164,6 @@ const cardModificationSubmittnHandler = (e) => {
       .filter((v) => v.tagName === "INPUT")
       .map((v) => v.value);
     store.modifyData(cardId, newInputData[0], newInputData[1]);
-
     cardEl.innerHTML = fixedWrapper({
       title: newInputData[0],
       text: newInputData[1],
@@ -190,7 +194,6 @@ const deleteWholeColumnClickEventHandler = (e) => {
 const doubleClickEvent = () => {
   const columnsWrapperEl = getElem(".columns-wrapper");
   columnsWrapperEl.addEventListener("dblclick", changeColumnNameEventHandler);
-  columnsWrapperEl.addEventListener("dblclick", cardModificationEventHandler);
 };
 
 const columnEvent = () => {
@@ -204,6 +207,7 @@ const columnEvent = () => {
       deleteWholeColumnClickEventHandler(e);
       cardModificationCancelBtnHandler(e);
       cardModificationSubmittnHandler(e);
+      cardModificationEventHandler(e);
     });
   });
   columnsWrapperEl.forEach((removeBtn) => {
