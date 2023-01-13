@@ -7,9 +7,7 @@ class Store {
     this.#columnId = 2;
     this.#cardId = 1;
   }
-  //문제는 standing에 대한 처리를 어떻게 할 것인가?
-  //standing에 대한 처리가 가장 애매한 것 같다. Column이 새로 추가된다면
-  //standing을 번호로 받을까? 이거를 id로 컨트롤 한다면 standing에 대한 처리가 엄청 쉬워질 것 같은데?
+
   addItems({ id, standing, title, contents }) {
     const obj = {
       id,

@@ -120,7 +120,7 @@ button:hover {
 .card-remove-btn {
   width: 15px;
   height: 15px;
-  background-color: white;
+  background-color: #fff;
 }
 
 .card-remove-btn:hover path {
