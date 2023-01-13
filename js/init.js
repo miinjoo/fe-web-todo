@@ -1,18 +1,16 @@
-import {
-  columnEvent,
-  logBtnClickEvent,
-  doubleClickEvent,
-} from "./events/column.js";
+import { cardEvents } from "./events/card.js";
+import { columnEvents } from "./events/column.js";
+import { logBtnClickEvent } from "./events/logBtn.js";
 import { modalEvent } from "./events/modal.js";
 import { Store } from "./store.js";
 import { dragNdrop } from "./events/drag.js";
 
 const init = () => {
-  doubleClickEvent();
-  columnEvent();
-  logBtnClickEvent();
+  cardEvents();
   modalEvent();
   dragNdrop();
+  columnEvents();
+  logBtnClickEvent();
 };
 
 export const store = new Store();
