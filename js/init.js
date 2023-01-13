@@ -5,12 +5,14 @@ import {
 } from "./events/column.js";
 import { modalEvent } from "./events/modal.js";
 import { Store } from "./store.js";
+import { dragNdrop } from "./events/drag.js";
 
 const init = () => {
   doubleClickEvent();
   columnEvent();
   logBtnClickEvent();
   modalEvent();
+  dragNdrop();
 };
 
 export const store = new Store();
