@@ -1,4 +1,3 @@
-import { log } from "../components/log.js";
 import {
   newCardWrapper,
   cardWrapper,
@@ -16,8 +15,16 @@ import {
   cardsBackgroundColorToggle,
 } from "../utils/utils.js";
 import { store } from "../init.js";
-import { cancel, threeBars } from "../components/svg.js";
+import { cancel, threeBars } from "../components/rightBtn.js";
 import { inputFieldsValidator } from "../utils/validations.js";
+import { Logs } from "../stores/Logs.js";
+import {
+  cardRightBtnsBackgroundChange,
+  cardRightBtnToggle,
+} from "../utils/styles.js";
+
+const logWrapper = getElem(".log-wrapper");
+const headerRightBtn = getElem(".chat-menu-btn");
 
 const changeColumnNameEventHandler = (e) => {
   if (e.target.className === "column-header-title") {
@@ -32,8 +39,6 @@ const columnAddBtnClickEventHandler = (e) => {
     const targetColumn = getTargetParentByClassName(e.target, "column-wrapper");
     addClsssName(e.target, "active");
     targetColumn.innerHTML += newCardWrapper({ id: "newCardInput" });
-    const addBtn = getElem(".column-add-btn");
-    addBtn.classList.add("active");
   }
 };
 
@@ -74,12 +79,9 @@ const cardAddBtnClickEventHandler = (e) => {
       if (v.classList.contains("active")) v.classList.remove("active");
     });
     targetColumn.innerHTML += cardWrapper(newCardInfor);
+
     deleteNode("#newCardInput");
-    getElem(".log-wrapper").innerHTML += log(
-      columnName.innerHTML,
-      newCardInfor.title,
-      "add"
-    );
+    new Logs(logWrapper, columnName.innerHTML, newCardInfor.title, "add");
     checkLogCount(targetColumn, columnId);
   }
 };
@@ -97,6 +99,8 @@ const cardRemoveHoverEventHandler = (e) => {
   if (e.target.className === "card-remove-btn") {
     const cardNode = getTargetParentByClassName(e.target, "card-wrapper");
     cardNode.classList.add("mouse-on");
+    const editBtn = e.target.nextElementSibling;
+    cardRightBtnsBackgroundChange(e.target, editBtn, "#ffeeec");
   }
 };
 
@@ -104,6 +108,8 @@ const cardRemoveOutEvenetHandler = (e) => {
   if (e.target.className === "card-remove-btn") {
     const cardNode = getTargetParentByClassName(e.target, "card-wrapper");
     cardNode.classList.remove("mouse-on");
+    const editBtn = e.target.nextElementSibling;
+    cardRightBtnsBackgroundChange(e.target, editBtn, "#fff");
   }
 };
 
@@ -111,12 +117,10 @@ const cardRemoveClickEventHandler = (e) => {
   if (e.target.className === "card-remove-btn") {
     const cardNode = getTargetParentByClassName(e.target, "card-wrapper");
     const modalWrapperEl = getElem(".modal-wrapper");
-    e.target.classList.toggle("clicked");
-    e.target.nextElementSibling.classList.toggle("clicked");
+    cardRightBtnToggle(e.target, e.target.nextElementSibling, "clicked");
     const bodyEl = document.body;
     addClassToAllBtns();
-    cardNode.classList.add("focused");
-    cardNode.classList.add("clicked");
+    cardNode.classList.add("focused", "clicked");
     modalWrapperEl.classList.add("active");
     bodyEl.classList.add("modal-display");
     cardsBackgroundColorToggle();
@@ -126,8 +130,7 @@ const cardRemoveClickEventHandler = (e) => {
 const addClassToAllBtns = () => {
   const addBtns = getElems(".column-add-btn");
   const removeBtns = getElems(".column-remove-btn");
-  const rightBtn = getElem(".chat-menu-btn");
-  rightBtn.classList.add("fadeout-col");
+  headerRightBtn.classList.add("fadeout-col");
   addBtns.forEach((ele) => ele.classList.add("fadeout-col"));
   removeBtns.forEach((ele) => ele.classList.add("fadeout-col"));
 };
@@ -145,8 +148,11 @@ const cardModificationCancelBtnHandler = (e) => {
     const cardEl = getTargetParentByClassName(e.target, "fixing");
     const cardId = cardEl.getAttribute("id");
     const originData = store.getDatas();
-    const d = originData.find((ele) => ele.id === cardId);
-    cardEl.innerHTML = fixedWrapper({ title: d.title, text: d.contents });
+    const parsedData = originData.find((ele) => ele.id === cardId);
+    cardEl.innerHTML = fixedWrapper({
+      title: parsedData.title,
+      text: parsedData.contents,
+    });
     cardEl.classList.remove("fixing");
   }
 };
@@ -155,6 +161,8 @@ const cardModificationSubmittnHandler = (e) => {
   if (e.target.className === "card-fix-add-btn") {
     const cardEl = getTargetParentByClassName(e.target, "fixing");
     const cardId = cardEl.getAttribute("id");
+    const targetColumn = getTargetParentByClassName(cardEl, "column-wrapper");
+    const columnName = getElem(".column-header-title", targetColumn);
     const newInputData = [...cardEl.children]
       .filter((v) => v.tagName === "INPUT")
       .map((v) => v.value);
@@ -164,7 +172,7 @@ const cardModificationSubmittnHandler = (e) => {
       text: newInputData[1],
     });
     cardEl.classList.remove("fixing");
-    console.log(store.getDatas());
+    new Logs(logWrapper, columnName.innerHTML, newInputData[0], "fix");
   }
 };
 
@@ -221,19 +229,18 @@ const columnEvent = () => {
 };
 
 const logSgvChange = () => {
-  const rightBtn = getElem(".chat-menu-btn");
-  if (rightBtn.getAttribute("class").includes("hidden")) {
-    rightBtn.innerHTML = cancel();
+  if (headerRightBtn.getAttribute("class").includes("hidden")) {
+    headerRightBtn.innerHTML = cancel();
   } else {
-    rightBtn.innerHTML = threeBars();
+    headerRightBtn.innerHTML = threeBars();
   }
 };
 
 const logBtnClickEvent = () => {
-  getElem(".chat-menu-btn").addEventListener("click", () => {
-    getElem(".log-wrapper").classList.toggle("hidden");
-    getElem(".log-wrapper").classList.toggle("disappear");
-    getElem(".chat-menu-btn").classList.toggle("hidden");
+  headerRightBtn.addEventListener("click", () => {
+    logWrapper.classList.toggle("hidden");
+    logWrapper.classList.toggle("disappear");
+    headerRightBtn.classList.toggle("hidden");
     logSgvChange();
   });
 };

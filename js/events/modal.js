@@ -5,7 +5,13 @@ import {
   getElems,
   cardsBackgroundColorToggle,
 } from "../utils/utils.js";
-import { log } from "../components/log.js";
+import { Logs } from "../stores/Logs.js";
+import {
+  cardRightBtnsBackgroundChange,
+  cardRightBtnToggle,
+} from "../utils/styles.js";
+
+const modalWrapperEl = getElem(".modal-wrapper");
 
 const modalEvent = () => {
   const modalCancelBtnEl = getElem(".modal-cancel-btn");
@@ -24,23 +30,18 @@ const columnBtnsBackgroundRemove = () => {
 };
 
 const removeBtnClickEventHandler = () => {
-  const modalWrapperEl = getElem(".modal-wrapper");
   const focusedCard = getElem(".focused");
   const removedData = getElem(".card-title", focusedCard).textContent;
-  const focusedCardRemoveBtn = getElem(".clicked", focusedCard);
   const bodyEl = document.body;
+  const logWrapper = getElem(".log-wrapper");
   const columnWrapper = getTargetParentByClassName(
     focusedCard,
     "column-wrapper"
   );
+  const colHeaderEl = getElem(".column-header-title", columnWrapper).innerHTML;
   cardsBackgroundColorToggle();
-  getElem(".log-wrapper").innerHTML += log(
-    getElem(".column-header-title", columnWrapper).innerHTML,
-    removedData,
-    "remove"
-  );
+  new Logs(logWrapper, colHeaderEl, removedData, "remove");
   bodyEl.classList.remove("modal-display");
-  focusedCardRemoveBtn.classList.toggle("clicked");
   focusedCard.remove();
   modalWrapperEl.classList.remove("active");
   columnBtnsBackgroundRemove();
@@ -48,17 +49,14 @@ const removeBtnClickEventHandler = () => {
 };
 
 const cancelBtnClickEventHandler = () => {
-  const modalWrapperEl = getElem(".modal-wrapper");
   const bodyEl = document.body;
   const wrapperEl = getElem(".clicked");
-  const focusedCardRemoveBtns = getElems(".clicked", wrapperEl);
-  cardsBackgroundColorToggle();
-  focusedCardRemoveBtns.forEach((btn) => btn.classList.toggle("clicked"));
+  const [removeBtn, editBtn] = getElems(".clicked", wrapperEl);
+  cardRightBtnsBackgroundChange(removeBtn, editBtn, "#ffffff");
+  cardRightBtnToggle(removeBtn, editBtn, "clicked");
   modalWrapperEl.classList.remove("active");
   bodyEl.classList.remove("modal-display");
-  wrapperEl.classList.remove("clicked");
-  wrapperEl.classList.remove("focused");
-  wrapperEl.classList.remove("mouse-on");
+  wrapperEl.classList.remove("clicked", "focuesd", "mouse-on");
   columnBtnsBackgroundRemove();
 };
 
