@@ -2,9 +2,8 @@
 
 ## 문제점
 
-    - Prototype기능을 사용하지 못함.
-    - class기능을 사용하지 못함.
-    - double click event들을 구현하지 못함.
-    - 모든 것을 innerHTML로 처리 => 따라서 저장소를 사용하지 못했음.
-    - drag event를 구현하지 못함.
-    - json형태의 객체 리터럴을 사용하지 못함.
+    - Column을 doubleClick시 이름을 바뀌게 하는 기능 아직 구현 못함
+    - Drag N Drop시 Log에 업데이트를 구현하지 못함
+    - Drag N Drop시 동적으로 추가되는 Column들에 대해 동작하지 못함
+    - 아직 Class를 활용한 Column과 Card를 구현하지 못함. 즉 현재는 innerHTML로 때려박고 있음
+    - Refactoring 필요 및 모듈화 필요
