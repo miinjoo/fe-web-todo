@@ -9,6 +9,7 @@ import { Logs } from "../stores/Logs.js";
 import {
   cardRightBtnsBackgroundChange,
   cardRightBtnToggle,
+  toggleClassNamedFadeoutCol,
 } from "../utils/styles.js";
 
 const modalWrapperEl = getElem(".modal-wrapper");
@@ -18,15 +19,6 @@ const modalEvent = () => {
   const modalRemoveBtnEl = getElem(".modal-remove-btn");
   modalRemoveBtnEl.addEventListener("click", removeBtnClickEventHandler);
   modalCancelBtnEl.addEventListener("click", cancelBtnClickEventHandler);
-};
-
-const columnBtnsBackgroundRemove = () => {
-  const addBtns = getElems(".column-add-btn");
-  const removeBtns = getElems(".column-remove-btn");
-  const rightBtn = getElem(".chat-menu-btn");
-  rightBtn.classList.remove("fadeout-col");
-  addBtns.forEach((ele) => ele.classList.remove("fadeout-col"));
-  removeBtns.forEach((ele) => ele.classList.remove("fadeout-col"));
 };
 
 const removeBtnClickEventHandler = () => {
@@ -44,7 +36,7 @@ const removeBtnClickEventHandler = () => {
   bodyEl.classList.remove("modal-display");
   focusedCard.remove();
   modalWrapperEl.classList.remove("active");
-  columnBtnsBackgroundRemove();
+  toggleClassNamedFadeoutCol();
   checkLogCount(columnWrapper);
 };
 
@@ -54,10 +46,11 @@ const cancelBtnClickEventHandler = () => {
   const [removeBtn, editBtn] = getElems(".clicked", wrapperEl);
   cardRightBtnsBackgroundChange(removeBtn, editBtn, "#ffffff");
   cardRightBtnToggle(removeBtn, editBtn, "clicked");
+  cardsBackgroundColorToggle();
   modalWrapperEl.classList.remove("active");
   bodyEl.classList.remove("modal-display");
   wrapperEl.classList.remove("clicked", "focuesd", "mouse-on");
-  columnBtnsBackgroundRemove();
+  toggleClassNamedFadeoutCol();
 };
 
 export { modalEvent };
