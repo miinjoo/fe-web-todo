@@ -393,7 +393,7 @@ button:hover {
   margin-right: 15px;
   margin-bottom: 10px;
   border-radius: 2px;
-  background-color: #e0e0e0;
+  background-color: #0075de;
 }
 
 .modal-cancel-btn {
@@ -402,7 +402,7 @@ button:hover {
   margin-right: 15px;
   margin-bottom: 10px;
   border-radius: 2px;
-  background-color: #0075de;
+  background-color: #e0e0e0;
 }
 
 /* Fav */
