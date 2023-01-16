@@ -5,6 +5,7 @@ body {
   position: relative;
   margin: 0;
   height: 886px;
+  user-select: none;
 }
 
 /* Header */
@@ -64,6 +65,18 @@ header {
   line-height: 18px;
   font-size: 9px;
   margin-left: 8px;
+}
+
+.colname-fix {
+  border: 1px solid #86c6ff;
+  width: 150px;
+  height: 30px;
+}
+
+.colname-fix::placeholder {
+  font-size: 16px;
+  font-weight: 700;
+  color: #828282;
 }
 
 .column-header-right-wrapper {

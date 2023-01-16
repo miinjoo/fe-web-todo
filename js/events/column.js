@@ -1,22 +1,34 @@
 import { getElem, getTargetParentByClassName } from "../utils/utils.js";
 import { store } from "../init.js";
 import { newColumn } from "../components/card.js";
+import { columnNameInputField, columnNameTag } from "../components/column.js";
 
 const logWrapper = getElem(".log-wrapper");
 const headerRightBtn = getElem(".chat-menu-btn");
 
-const changeColumnNameEventHandler = (e) => {
-  if (e.target.className === "column-header-title") {
-    const targetColumn = getTargetParentByClassName(e.target, "column-wrapper");
-    const currentName = e.target.innerHTML;
-    console.log("to be fixed......");
+const changeColumnNameEventHandler = ({ target }) => {
+  if (target.className === "column-header-title") {
+    const currentName = target.innerHTML;
+    target.innerHTML = columnNameInputField(currentName);
+  }
+};
+
+const columnNameOtherAreaClickEventHandler = ({ target }) => {
+  const fixingColEl = getElem(".colname-fix");
+  if (fixingColEl && target.className !== "colname-fix") {
+    const titleEl = getTargetParentByClassName(
+      fixingColEl,
+      "column-header-title"
+    );
+    const fixedColName = fixingColEl.value;
+    fixingColEl.remove();
+    titleEl.innerHTML = fixedColName;
   }
 };
 
 const addWholeColumnClickEventHandler = (e) => {
   const colNode = getElem(".columns-wrapper");
   store.updateColumnId();
-  console.log("is working?");
   colNode.innerHTML += newColumn({ id: store.getColumnId(), title: "냉무" });
 };
 
@@ -34,10 +46,12 @@ const deleteWholeColumnClickEventHandler = (e) => {
 
 const columnEvents = () => {
   const columnWrapperEl = getElem(".columns-wrapper");
+  const fabEl = getElem(".add-column-btn-wrapper");
+  const bodyEl = document.body;
   columnWrapperEl.addEventListener("click", deleteWholeColumnClickEventHandler);
   columnWrapperEl.addEventListener("dblclick", changeColumnNameEventHandler);
-  const fab = getElem(".add-column-btn-wrapper");
-  fab.addEventListener("click", addWholeColumnClickEventHandler);
+  bodyEl.addEventListener("click", columnNameOtherAreaClickEventHandler);
+  fabEl.addEventListener("click", addWholeColumnClickEventHandler);
 };
 
 export { columnEvents };
