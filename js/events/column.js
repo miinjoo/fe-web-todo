@@ -1,7 +1,8 @@
 import { getElem, getTargetParentByClassName } from "../utils/utils.js";
 import { store } from "../init.js";
+import { columns } from "../stores/Columns.js";
 import { newColumn } from "../components/card.js";
-import { columnNameInputField, columnNameTag } from "../components/column.js";
+import { columnNameInputField } from "../components/column.js";
 
 const logWrapper = getElem(".log-wrapper");
 const headerRightBtn = getElem(".chat-menu-btn");
@@ -30,6 +31,7 @@ const addWholeColumnClickEventHandler = (e) => {
   const colNode = getElem(".columns-wrapper");
   store.updateColumnId();
   colNode.innerHTML += newColumn({ id: store.getColumnId(), title: "냉무" });
+  columns.addCol(store.getColumnId());
 };
 
 const deleteWholeColumnClickEventHandler = (e) => {
@@ -40,6 +42,7 @@ const deleteWholeColumnClickEventHandler = (e) => {
       alert("You can't remove default Column!");
       return;
     }
+    columns.removeCol(columnId);
     targetColumn.remove();
   }
 };
