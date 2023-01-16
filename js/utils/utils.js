@@ -58,7 +58,7 @@ const getElem = (attributes, start = document.body) => {
       }
     }
   }
-  return "not found";
+  return null;
 };
 
 const deleteNode = (query) => {
