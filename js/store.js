@@ -27,13 +27,28 @@ class Store {
     });
   }
 
-  modifyData(id, title, contents) {
+  removeObjectById(id) {
+    this.#datas = this.#datas.filter((ele) => ele.id !== id);
+    console.log(this.#datas);
+  }
+
+  modifyDataFromEdit(id, title, contents) {
     const idx = this.#datas.findIndex((ele) => ele.id === id);
     this.#datas[idx] = {
       ...this.#datas[idx],
       title,
       contents,
     };
+    console.log(this.#datas);
+  }
+
+  modifyDataFromDrag(id, standing) {
+    const idx = this.#datas.findIndex((ele) => ele.id === id);
+    this.#datas[idx] = {
+      ...this.#datas[idx],
+      standing,
+    };
+    console.log(this.#datas);
   }
 
   getDatas() {
@@ -62,8 +77,6 @@ class Store {
   //임시 출력 메소드
   print() {
     console.log(this.#datas);
-    console.log(this.#cardId, "cardId");
-    console.log(this.#columnId, "colId");
   }
 }
 

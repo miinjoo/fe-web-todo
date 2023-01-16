@@ -11,6 +11,7 @@ import {
   cardRightBtnToggle,
   toggleClassNamedFadeoutCol,
 } from "../utils/styles.js";
+import { store } from "../init.js";
 
 const modalWrapperEl = getElem(".modal-wrapper");
 
@@ -32,8 +33,9 @@ const removeBtnClickEventHandler = () => {
   );
   const colHeaderEl = getElem(".column-header-title", columnWrapper).innerHTML;
   cardsBackgroundColorToggle();
-  new Logs(logWrapper, colHeaderEl, removedData, "remove");
+  new Logs(logWrapper, colHeaderEl, removedData, "REMOVE");
   bodyEl.classList.remove("modal-display");
+  store.removeObjectById(focusedCard.id);
   focusedCard.remove();
   modalWrapperEl.classList.remove("active");
   toggleClassNamedFadeoutCol();

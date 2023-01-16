@@ -64,7 +64,7 @@ const cardAddBtnConfirmEventHandler = (e) => {
       contents: newCardInfor.text,
     });
     targetColumn.innerHTML += cardWrapper(newCardInfor);
-    new Logs(logWrapper, columnName.innerHTML, newCardInfor.title, "add");
+    new Logs(logWrapper, columnName.innerHTML, newCardInfor.title, "ADD");
     checkLogCount(targetColumn, columnId);
   }
 };
@@ -139,13 +139,13 @@ const cardModificationSubmittnHandler = (e) => {
     const newInputData = [...cardEl.children]
       .filter((v) => v.tagName === "INPUT")
       .map((v) => v.value);
-    store.modifyData(cardId, newInputData[0], newInputData[1]);
+    store.modifyDataFromEdit(cardId, newInputData[0], newInputData[1]);
     cardEl.innerHTML = fixedWrapper({
       title: newInputData[0],
       text: newInputData[1],
     });
     cardEl.classList.remove("fixing");
-    new Logs(logWrapper, columnName.innerHTML, newInputData[0], "fix");
+    new Logs(logWrapper, columnName.innerHTML, newInputData[0], "FIX");
   }
 };
 
