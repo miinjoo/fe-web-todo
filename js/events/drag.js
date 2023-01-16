@@ -1,23 +1,27 @@
-import { getElem } from "../utils/utils.js";
+import { getElem, getTargetParentByClassName } from "../utils/utils.js";
+import { columns } from "../stores/Columns.js";
+import { store } from "../init.js";
+import { Logs } from "../stores/Logs.js";
+
+const logWrapper = getElem(".log-wrapper");
 
 const dragNdrop = () => {
   const columnsWrapperEl = getElem(".columns-wrapper");
   columnsWrapperEl.addEventListener("mousedown", (event) => {
     if (event.target.classList.contains("card-wrapper")) {
-      const ball = event.target;
-      const cardWrapper = ball.parentNode;
-      const newBall = ball.cloneNode(true);
-      ball.style.opacity = "0.5";
-      newBall.style.zIndex = 10000;
-      cardWrapper.append(newBall);
-      newBall.style.position = "absolute";
-
-      document.body.append(newBall);
+      const card = event.target;
+      const cardWrapper = card.parentNode;
+      const newCard = card.cloneNode(true);
+      card.style.opacity = "0.5";
+      newCard.style.zIndex = 10000;
+      cardWrapper.append(newCard);
+      newCard.style.position = "absolute";
+      document.body.append(newCard);
       moveAt(event.pageX, event.pageY);
 
       function moveAt(pageX, pageY) {
-        newBall.style.left = pageX - newBall.offsetWidth / 2 + "px";
-        newBall.style.top = pageY - newBall.offsetHeight / 2 + "px";
+        newCard.style.left = pageX - newCard.offsetWidth / 2 + "px";
+        newCard.style.top = pageY - newCard.offsetHeight / 2 + "px";
       }
 
       moveAt(event.pageX, event.pageY);
@@ -27,28 +31,40 @@ const dragNdrop = () => {
       }
 
       document.addEventListener("mousemove", onMouseMove);
-      newBall.onmouseup = (event) => {
+      newCard.onmouseup = (event) => {
         document.removeEventListener("mousemove", onMouseMove);
-        newBall.onmouseup = null;
-        ball.remove();
-        const x = event.pageX - newBall.offsetWidth / 2;
-        if (x >= 0 && x <= 390) {
-          const secondCol = document.getElementById("0");
-          newBall.style = "";
-          secondCol.appendChild(newBall);
-        }
-        if (event.pageX >= 391 && event.pageX <= 700) {
-          const secondCol = document.getElementById("1");
-          newBall.style = "";
-          secondCol.appendChild(newBall);
-        }
-        if (event.pageX >= 701 && event.pageX <= 1010) {
-          const secondCol = document.getElementById("2");
-          newBall.style = "";
-          secondCol.appendChild(newBall);
+        newCard.onmouseup = null;
+        const originColumn = getTargetParentByClassName(card, "column-wrapper");
+        const originColName = getElem(
+          ".column-header-title",
+          originColumn
+        ).textContent;
+        const x = event.pageX - newCard.offsetWidth / 2;
+        const columnWidths = columns.getWidths();
+        const cardTitle = getElem(".card-title", newCard).innerHTML;
+        card.remove();
+        for (const col of columnWidths) {
+          if (x >= col.startX && x <= col.endX) {
+            newCard.style = "";
+            const targetColumn = document.getElementById(col.id);
+            const targetColName = getElem(
+              ".column-header-title",
+              targetColumn
+            ).innerHTML;
+            targetColumn.appendChild(newCard);
+            if (targetColName === originColName) return;
+            store.modifyDataFromDrag(newCard.id, targetColumn.id);
+            new Logs(
+              logWrapper,
+              originColName,
+              cardTitle,
+              "MOVE",
+              targetColName
+            );
+            return;
+          }
         }
       };
-
       document.ondragstart = function () {
         return false;
       };
