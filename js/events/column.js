@@ -3,13 +3,17 @@ import { store } from "../init.js";
 import { columns } from "../stores/Columns.js";
 import { newColumn } from "../components/card.js";
 import { columnNameInputField } from "../components/column.js";
+import { inputFieldsValidator } from "../utils/validations.js";
+import { Logs } from "../stores/Logs.js";
 
 const logWrapper = getElem(".log-wrapper");
-const headerRightBtn = getElem(".chat-menu-btn");
+const DUMMY_TEXT = "HELLO WORLD!";
+let originColName;
 
 const changeColumnNameEventHandler = ({ target }) => {
   if (target.className === "column-header-title") {
     const currentName = target.innerHTML;
+    originColName = currentName;
     target.innerHTML = columnNameInputField(currentName);
   }
 };
@@ -23,7 +27,14 @@ const columnNameOtherAreaClickEventHandler = ({ target }) => {
     );
     const fixedColName = fixingColEl.value;
     fixingColEl.remove();
+    if (!inputFieldsValidator(fixedColName, DUMMY_TEXT)) {
+      alert("You can't leave Column Name empty!");
+      titleEl.innerHTML = originColName;
+      return;
+    }
     titleEl.innerHTML = fixedColName;
+    if (fixedColName !== originColName)
+      new Logs(logWrapper, originColName, fixedColName, "NAME");
   }
 };
 
