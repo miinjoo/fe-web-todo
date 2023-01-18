@@ -5,7 +5,7 @@ class Store {
   constructor() {
     this.#datas = [];
     this.#columnId = 2;
-    this.#cardId = 1;
+    this.#cardId = 0;
   }
 
   addItems({ id, standing, title, contents }) {

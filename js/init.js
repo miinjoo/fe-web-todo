@@ -14,12 +14,6 @@ const init = () => {
 };
 
 export const store = new Store();
-store.addItems({
-  id: "card-1",
-  standing: "2",
-  title: "card title",
-  contents: "add, commit, push",
-});
 store.print();
 
 init();
