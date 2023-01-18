@@ -1,10 +1,5 @@
-const inputFieldsValidator = (newCardInfor) => {
-  if (
-    newCardInfor.title === null ||
-    newCardInfor.title === "" ||
-    newCardInfor.text === null ||
-    newCardInfor.text === ""
-  ) {
+const inputFieldsValidator = (title, text) => {
+  if (title === null || title === "" || text === null || text === "") {
     return false;
   }
   return true;
