@@ -1,4 +1,8 @@
-import { getElem, getTargetParentByClassName } from "../utils/utils.js";
+import {
+  getElem,
+  getTargetParentByClassName,
+  cardCountChecker,
+} from "../utils/utils.js";
 import { columns } from "../stores/Columns.js";
 import { store } from "../init.js";
 import { Logs } from "../stores/Logs.js";
@@ -61,6 +65,7 @@ const dragNdrop = () => {
               "MOVE",
               targetColName
             );
+            cardCountChecker();
             return;
           }
         }

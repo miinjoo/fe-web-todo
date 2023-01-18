@@ -1,9 +1,9 @@
 import {
-  checkLogCount,
   getTargetParentByClassName,
   getElem,
   getElems,
   cardsBackgroundColorToggle,
+  cardCountChecker,
 } from "../utils/utils.js";
 import { Logs } from "../stores/Logs.js";
 import {
@@ -39,7 +39,7 @@ const removeBtnClickEventHandler = () => {
   focusedCard.remove();
   modalWrapperEl.classList.remove("active");
   toggleClassNamedFadeoutCol();
-  checkLogCount(columnWrapper);
+  cardCountChecker();
 };
 
 const cancelBtnClickEventHandler = () => {
