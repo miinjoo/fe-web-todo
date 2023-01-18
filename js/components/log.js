@@ -4,6 +4,7 @@ const log = (where, text, action, to = "") => {
     REMOVE: `<strong>${where}</strong>에 <strong>${text}</strong>을(를) 새로 <strong>삭제</strong>했습니다.`,
     FIX: `<strong>${where}</strong>에 <strong>${text}</strong>을(를) 새로 <strong>수정</strong>했습니다.`,
     MOVE: `<strong>${where}</strong>에서 <strong>${text}</strong>을(를) <strong>${to}</strong>로 <strong>이동</strong>했습니다.`,
+    NAME: `<strong>${where}</strong> 영역의 이름이 <strong>${text}</strong>(으)로  <strong>변경</strong>되었습니다.`,
   };
   return ` <div class="log-card-wrapper">
         <div class="log-image-wrapper">
