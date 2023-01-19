@@ -47,9 +47,16 @@ const removeCardDataFromServer = async (cardId) => {
   return data;
 };
 
+const refeshJSONdata = async () => {
+  const cardData = await getCardDataFromServer();
+  const cardIds = cardData.map((ele) => ele.id);
+  cardIds.forEach((id) => removeCardDataFromServer(id));
+};
+
 export {
   addCardDataToServer,
   modifyCardDataInServer,
   getCardDataFromServer,
   removeCardDataFromServer,
+  refeshJSONdata,
 };
