@@ -21,15 +21,11 @@ class Store {
   }
 
   findObjectById(id) {
-    console.log("argument is : " + id);
-    return this.#datas.filter((elem) => {
-      elem.id === id;
-    });
+    return this.#datas.filter((elem) => elem.id === id);
   }
 
   removeObjectById(id) {
     this.#datas = this.#datas.filter((ele) => ele.id !== id);
-    console.log(this.#datas);
   }
 
   modifyDataFromEdit(id, title, contents) {
@@ -39,7 +35,6 @@ class Store {
       title,
       contents,
     };
-    console.log(this.#datas);
   }
 
   modifyDataFromDrag(id, standing) {
@@ -48,7 +43,6 @@ class Store {
       ...this.#datas[idx],
       standing,
     };
-    console.log(this.#datas);
   }
 
   getDatas() {
