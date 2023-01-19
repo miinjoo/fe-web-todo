@@ -30,12 +30,14 @@ header {
 
 .columns-wrapper {
   display: flex;
+  height: 700px;
   padding-left: 80px;
   padding-top: 20px;
 }
 
 .column-wrapper {
   width: 300px;
+  height: 700px;
   margin-right: 10px;
 }
 
@@ -308,7 +310,7 @@ button:hover {
   align-items: center;
   flex-direction: column;
   width: 600px;
-  height: 969px;
+  height: 750px;
   padding: 40px;
   padding-top: 150px;
   z-index: 1;
