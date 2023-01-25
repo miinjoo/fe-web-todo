@@ -1,4 +1,5 @@
 import { log } from "../components/log.js";
+import { addLogsDataToServer } from "../utils/fetch.js";
 
 class Logs {
   #columnName;
@@ -16,6 +17,7 @@ class Logs {
     this.#time = this.generateTime();
     this.$target = $target;
     this.render();
+    this.saveOnServer();
   }
 
   render() {
@@ -23,6 +25,17 @@ class Logs {
       "afterbegin",
       log(this.#columnName, this.#title, this.#action, this.#from, this.#to)
     );
+  }
+
+  saveOnServer() {
+    const logData = {
+      title: this.#title,
+      action: this.#action,
+      standing: this.#columnName,
+      from: this.#from,
+      to: this.#to,
+    };
+    addLogsDataToServer(logData);
   }
 }
 

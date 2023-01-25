@@ -1,4 +1,4 @@
-import { getElem, getTargetParentByClassName } from "../utils/utils.js";
+import { getElem, getTargetParent } from "../utils/utils.js";
 import { store } from "../init.js";
 import { columns } from "../stores/Columns.js";
 import { newColumn } from "../components/card.js";
@@ -11,20 +11,16 @@ const DUMMY_TEXT = "HELLO WORLD!";
 let originColName;
 
 const changeColumnNameEventHandler = ({ target }) => {
-  if (target.className === "column-header-title") {
-    const currentName = target.innerHTML;
-    originColName = currentName;
-    target.innerHTML = columnNameInputField(currentName);
-  }
+  if (target.className !== "column-header-title") return;
+  const currentName = target.innerHTML;
+  originColName = currentName;
+  target.innerHTML = columnNameInputField(currentName);
 };
 
 const columnNameOtherAreaClickEventHandler = ({ target }) => {
   const fixingColEl = getElem(".colname-fix");
   if (fixingColEl && target.className !== "colname-fix") {
-    const titleEl = getTargetParentByClassName(
-      fixingColEl,
-      "column-header-title"
-    );
+    const titleEl = getTargetParent(fixingColEl, "column-header-title");
     const fixedColName = fixingColEl.value;
     fixingColEl.remove();
     if (!inputFieldsValidator(fixedColName, DUMMY_TEXT)) {
@@ -45,17 +41,16 @@ const addWholeColumnClickEventHandler = (e) => {
   columns.addCol(store.getColumnId());
 };
 
-const deleteWholeColumnClickEventHandler = (e) => {
-  if (e.target.className === "column-remove-btn") {
-    const targetColumn = getTargetParentByClassName(e.target, "column-wrapper");
-    const columnId = targetColumn.getAttribute("id");
-    if (columnId <= 2) {
-      alert("You can't remove default Column!");
-      return;
-    }
-    columns.removeCol(columnId);
-    targetColumn.remove();
+const deleteWholeColumnClickEventHandler = ({ target }) => {
+  if (target.className !== "column-remove-btn") return;
+  const targetColumn = getTargetParent(target, "column-wrapper");
+  const columnId = targetColumn.getAttribute("id");
+  if (columnId <= 2) {
+    alert("You can't remove default Column!");
+    return;
   }
+  columns.removeCol(columnId);
+  targetColumn.remove();
 };
 
 const columnEvents = () => {
