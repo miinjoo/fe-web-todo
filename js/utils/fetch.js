@@ -1,6 +1,11 @@
+import { getElem } from "./utils.js";
+import { cardWrapper } from "../components/card.js";
+
+const cardUlr = "http://localhost:3000/cards";
+const logsUlr = "http://localhost:3000/logs";
+
 const addCardDataToServer = async (cardData) => {
-  const url = "http://localhost:3000/cards";
-  const response = await fetch(url, {
+  const response = await fetch(cardUlr, {
     method: "post",
     headers: {
       "Content-Type": "application/json",
@@ -23,8 +28,7 @@ const modifyCardDataInServer = async (cardId, cardData) => {
 };
 
 const getCardDataFromServer = async () => {
-  const url = "http://localhost:3000/cards";
-  const cardDataResponse = await fetch(url, {
+  const cardDataResponse = await fetch(cardUlr, {
     method: "get",
     headers: {
       "Content-Type": "application/json",
@@ -53,10 +57,24 @@ const refeshJSONdata = async () => {
   cardIds.forEach((id) => removeCardDataFromServer(id));
 };
 
+const initJSONdata = async () => {
+  const cardDataFromServer = await getCardDataFromServer();
+  for (const card of cardDataFromServer) {
+    const targetColumn = getElem(`#${+card.standing}`);
+    targetColumn.innerHTML += cardWrapper({
+      title: card.title,
+      text: card.text,
+      id: "card-" + card.id,
+    });
+  }
+};
+
 export {
   addCardDataToServer,
+  addLogsDataToServer,
   modifyCardDataInServer,
   getCardDataFromServer,
   removeCardDataFromServer,
   refeshJSONdata,
+  initJSONdata,
 };

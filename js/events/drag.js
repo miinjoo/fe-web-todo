@@ -2,11 +2,13 @@ import {
   getElem,
   getTargetParentByClassName,
   cardCountChecker,
+  getElems,
 } from "../utils/utils.js";
 import { columns } from "../stores/Columns.js";
 import { store } from "../init.js";
 import { Logs } from "../stores/Logs.js";
-import { NUMBERS } from "../utils/constans.js";
+import { NUMBERS } from "../utils/constants.js";
+import { addCardDataToServer, refeshJSONdata } from "../utils/fetch.js";
 
 const logWrapper = getElem(".log-wrapper");
 
@@ -65,7 +67,8 @@ const dragNdrop = () => {
       }
 
       for (let i = 0; i < cards.length; i = i + 1) {
-        const currentCardHeight = BASETOP + CARDHEIGHT * i + CARDHEIGHT / 2;
+        const currentCardHeight =
+          NUMBERS.BASETOP + NUMBERS.CARDHEIGHT * i + NUMBERS.CARDHEIGHT / 2;
         if (
           BASETOP + CARDHEIGHT * i < event.clientY &&
           event.clientY < BASETOP + CARDHEIGHT * (i + 1)
@@ -74,6 +77,7 @@ const dragNdrop = () => {
             cards[i].after(afterImagedCard);
           } else {
             column.insertBefore(afterImagedCard, cards[i]);
+            //before로 바꿔도 됨
           }
         }
       }
@@ -99,12 +103,13 @@ const dragNdrop = () => {
           newCard.style = "";
           const targetColumn = document.getElementById(col.id);
           const cardsAvailable = targetColumn.querySelectorAll(".card-wrapper");
-          const targetColName = getElem(
-            ".column-header-title",
-            targetColumn
+          const targetColName = targetColumn.querySelector(
+            ".column-header-title"
           ).innerHTML;
+
           if (cardsAvailable.length === 0) {
             targetColumn.appendChild(newCard);
+            reorderAllCards();
             return;
           }
 
@@ -130,11 +135,12 @@ const dragNdrop = () => {
               }
             }
           }
-
+          reorderAllCards();
           if (targetColName === originColName) return;
           store.modifyDataFromDrag(newCard.id, targetColumn.id);
           new Logs(logWrapper, originColName, cardTitle, "MOVE", targetColName);
           cardCountChecker();
+
           return;
         }
       }
@@ -143,6 +149,28 @@ const dragNdrop = () => {
       return false;
     };
   });
+};
+
+const reorderAllCards = async () => {
+  const columns = getElems(".column-wrapper");
+  await refeshJSONdata();
+  //debugger;
+  for (const col of columns) {
+    const columnStanding = col.getAttribute("id");
+    const cards = col.querySelectorAll(".card-wrapper");
+
+    if (cards.length === 0) continue;
+    for (const card of cards) {
+      const title = card.querySelector(".card-title").innerHTML;
+      const text = card.querySelector(".card-text").innerHTML;
+      const cardData = {
+        standing: columnStanding,
+        title,
+        text,
+      };
+      await addCardDataToServer(cardData);
+    }
+  }
 };
 
 export { dragNdrop };
