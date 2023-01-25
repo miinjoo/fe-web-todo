@@ -1,4 +1,4 @@
-const getTargetParentByClassName = (node, className) => {
+const getTargetParent = (node, className) => {
   if (node) {
     let current = node;
     while (current !== document.body) {
@@ -66,10 +66,4 @@ const cardCountChecker = () => {
   }
 };
 
-export {
-  getTargetParentByClassName,
-  deleteNode,
-  getElem,
-  getElems,
-  cardCountChecker,
-};
+export { getTargetParent, deleteNode, getElem, getElems, cardCountChecker };
