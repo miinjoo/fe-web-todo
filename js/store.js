@@ -5,7 +5,7 @@ class Store {
   constructor() {
     this.#datas = [];
     this.#columnId = 2;
-    this.#cardId = 1;
+    this.#cardId = 0;
   }
 
   addItems({ id, standing, title, contents }) {
@@ -21,18 +21,27 @@ class Store {
   }
 
   findObjectById(id) {
-    console.log("argument is : " + id);
-    return this.#datas.filter((elem) => {
-      elem.id === id;
-    });
+    return this.#datas.filter((elem) => elem.id === id);
   }
 
-  modifyData(id, title, contents) {
+  removeObjectById(id) {
+    this.#datas = this.#datas.filter((ele) => ele.id !== id);
+  }
+
+  modifyDataFromEdit(id, title, contents) {
     const idx = this.#datas.findIndex((ele) => ele.id === id);
     this.#datas[idx] = {
       ...this.#datas[idx],
       title,
       contents,
+    };
+  }
+
+  modifyDataFromDrag(id, standing) {
+    const idx = this.#datas.findIndex((ele) => ele.id === id);
+    this.#datas[idx] = {
+      ...this.#datas[idx],
+      standing,
     };
   }
 
@@ -62,8 +71,6 @@ class Store {
   //임시 출력 메소드
   print() {
     console.log(this.#datas);
-    console.log(this.#cardId, "cardId");
-    console.log(this.#columnId, "colId");
   }
 }
 

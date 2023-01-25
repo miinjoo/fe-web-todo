@@ -5,6 +5,7 @@ body {
   position: relative;
   margin: 0;
   height: 886px;
+  user-select: none;
 }
 
 /* Header */
@@ -29,12 +30,14 @@ header {
 
 .columns-wrapper {
   display: flex;
+  height: 700px;
   padding-left: 80px;
   padding-top: 20px;
 }
 
 .column-wrapper {
   width: 300px;
+  height: 700px;
   margin-right: 10px;
 }
 
@@ -64,6 +67,18 @@ header {
   line-height: 18px;
   font-size: 9px;
   margin-left: 8px;
+}
+
+.colname-fix {
+  border: 1px solid #86c6ff;
+  width: 150px;
+  height: 30px;
+}
+
+.colname-fix::placeholder {
+  font-size: 16px;
+  font-weight: 700;
+  color: #828282;
 }
 
 .column-header-right-wrapper {
@@ -295,7 +310,7 @@ button:hover {
   align-items: center;
   flex-direction: column;
   width: 600px;
-  height: 969px;
+  height: 750px;
   padding: 40px;
   padding-top: 150px;
   z-index: 1;

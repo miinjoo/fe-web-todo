@@ -1,5 +1,3 @@
-import { store } from "../init.js";
-
 const getTargetParentByClassName = (node, className) => {
   if (node) {
     let current = node;
@@ -58,7 +56,7 @@ const getElem = (attributes, start = document.body) => {
       }
     }
   }
-  return "not found";
+  return null;
 };
 
 const deleteNode = (query) => {
@@ -69,13 +67,13 @@ const addClsssName = (node, className) => {
   node.classList.add(className);
 };
 
-const checkLogCount = (targetColumn, columnId) => {
-  const activeList = store.getStandingList(columnId);
-  const activeListNum = activeList.filter(
-    (elem) => elem.status === true
-  ).length;
-  const targetChild = getElem(".column-header-num", targetColumn);
-  targetChild.innerHTML = activeListNum;
+const cardCountChecker = () => {
+  const columns = document.querySelectorAll(".column-wrapper");
+  for (const column of columns) {
+    const cardCounts = column.querySelector(".column-header-num");
+    const counts = column.querySelectorAll(".card-wrapper").length;
+    cardCounts.innerHTML = counts;
+  }
 };
 
 const cardsBackgroundColorToggle = () => {
@@ -105,8 +103,8 @@ export {
   getTargetParentByClassName,
   deleteNode,
   addClsssName,
-  checkLogCount,
   getElem,
   getElems,
   cardsBackgroundColorToggle,
+  cardCountChecker,
 };

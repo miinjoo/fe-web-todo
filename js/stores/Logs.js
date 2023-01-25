@@ -5,11 +5,14 @@ class Logs {
   #title;
   #action;
   #time;
+  #from;
+  #to;
   $target;
-  constructor($target, columnName, title, action) {
+  constructor($target, columnName, title, action, from = "") {
     this.#columnName = columnName;
     this.#title = title;
     this.#action = action;
+    this.#from = from;
     this.#time = this.generateTime();
     this.$target = $target;
     this.render();
@@ -18,7 +21,7 @@ class Logs {
   render() {
     this.$target.insertAdjacentHTML(
       "afterbegin",
-      log(this.#columnName, this.#title, this.#action)
+      log(this.#columnName, this.#title, this.#action, this.#from, this.#to)
     );
   }
 }

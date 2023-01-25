@@ -8,10 +8,10 @@ import {
   deleteNode,
   addClsssName,
   getTargetParentByClassName,
-  checkLogCount,
   getElems,
   getElem,
   cardsBackgroundColorToggle,
+  cardCountChecker,
 } from "../utils/utils.js";
 import { store } from "../init.js";
 import { inputFieldsValidator } from "../utils/validations.js";
@@ -22,6 +22,7 @@ import {
   removeClassNameActive,
   toggleClassNamedFadeoutCol,
 } from "../utils/styles.js";
+import { addCardDataToServer, modifyCardDataInServer } from "../utils/fetch.js";
 
 const logWrapper = getElem(".log-wrapper");
 
@@ -35,11 +36,6 @@ const cardAddBtnClickEventHandler = (e) => {
 
 const cardAddBtnConfirmEventHandler = (e) => {
   if (e.target.className === "card-add-btn") {
-    const newCardInfor = {
-      title: null,
-      text: null,
-      id: null,
-    };
     const targetColumn = getTargetParentByClassName(e.target, "column-wrapper");
     const columnId = targetColumn.getAttribute("id");
     const newCardInputEl = getElem("#newCardInput");
@@ -47,25 +43,26 @@ const cardAddBtnConfirmEventHandler = (e) => {
     const newInputData = [...newCardInputEl.children]
       .filter((v) => v.tagName === "INPUT")
       .map((v) => v.value);
-    newCardInfor.title = newInputData[0];
-    newCardInfor.text = newInputData[1];
+    const [title, text] = newInputData;
     removeClassNameActive(targetColumn);
     deleteNode("#newCardInput");
-    if (!inputFieldsValidator(newCardInfor)) {
+    if (!inputFieldsValidator(title, text)) {
       alert("please input all fields");
       return;
     }
     store.updateCardId();
-    newCardInfor.id = "card-" + String(store.getCardId());
-    store.addItems({
-      id: newCardInfor.id,
+    const id = "card-" + String(store.getCardId());
+    const newCardItem = {
+      id,
       standing: columnId,
-      title: newInputData[0],
-      contents: newCardInfor.text,
-    });
-    targetColumn.innerHTML += cardWrapper(newCardInfor);
-    new Logs(logWrapper, columnName.innerHTML, newCardInfor.title, "add");
-    checkLogCount(targetColumn, columnId);
+      title,
+      contents: text,
+    };
+    store.addItems(newCardItem);
+    addCardDataToServer(newCardItem);
+    targetColumn.innerHTML += cardWrapper({ title, text, id });
+    new Logs(logWrapper, columnName.innerHTML, title, "ADD");
+    cardCountChecker();
   }
 };
 
@@ -135,17 +132,17 @@ const cardModificationSubmittnHandler = (e) => {
     const cardEl = getTargetParentByClassName(e.target, "fixing");
     const cardId = cardEl.getAttribute("id");
     const targetColumn = getTargetParentByClassName(cardEl, "column-wrapper");
+    const standing = targetColumn.getAttribute("id");
     const columnName = getElem(".column-header-title", targetColumn);
     const newInputData = [...cardEl.children]
       .filter((v) => v.tagName === "INPUT")
       .map((v) => v.value);
-    store.modifyData(cardId, newInputData[0], newInputData[1]);
-    cardEl.innerHTML = fixedWrapper({
-      title: newInputData[0],
-      text: newInputData[1],
-    });
+    const [title, text] = newInputData;
+    store.modifyDataFromEdit(cardId, title, text);
+    modifyCardDataInServer(cardId, { cardId, standing, title, text });
+    cardEl.innerHTML = fixedWrapper({ title, text });
     cardEl.classList.remove("fixing");
-    new Logs(logWrapper, columnName.innerHTML, newInputData[0], "fix");
+    new Logs(logWrapper, columnName.innerHTML, title, "FIX");
   }
 };
 
