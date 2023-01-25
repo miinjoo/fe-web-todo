@@ -113,9 +113,7 @@ const cardModificationCancelBtnHandler = async ({ target }) => {
   const cardEl = getTargetParent(target, "fixing");
   const cardId = cardEl.getAttribute("id");
   const originData = await getCardDataFromServer();
-  console.log(originData);
   const parsedData = originData.find((ele) => "card-" + ele.id == cardId);
-  console.log(parsedData);
   cardEl.innerHTML = fixedWrapper({
     title: parsedData.title,
     text: parsedData.text,
