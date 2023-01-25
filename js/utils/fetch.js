@@ -15,6 +15,17 @@ const addCardDataToServer = async (cardData) => {
   return response.ok;
 };
 
+const addLogsDataToServer = async (logData) => {
+  const response = await fetch(logsUlr, {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(logData),
+  });
+  return response.ok;
+};
+
 const modifyCardDataInServer = async (cardId, cardData) => {
   const url = `http://localhost:3000/cards/${cardId}`;
   const response = await fetch(url, {
