@@ -1,4 +1,4 @@
-import { getElem, getElems, getTargetParentByClassName } from "./utils.js";
+import { getElem, getElems, getTargetParent } from "./utils.js";
 
 const cardRightBtnsBackgroundChange = (removeBtn, editBtn, color) => {
   removeBtn.style.backgroundColor = color;
@@ -39,7 +39,7 @@ const cardsBackgroundColorToggle = () => {
   cardBtns.forEach((btn) => {
     if (
       String(
-        getTargetParentByClassName(btn, "card-wrapper")
+        getTargetParent(btn, "card-wrapper")
           .getAttribute("class")
           .includes("fadeout-card")
       )

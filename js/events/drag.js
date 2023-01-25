@@ -1,6 +1,6 @@
 import {
   getElem,
-  getTargetParentByClassName,
+  getTargetParent,
   cardCountChecker,
   getElems,
 } from "../utils/utils.js";
@@ -19,7 +19,7 @@ const dragNdrop = () => {
 
     const card = event.target;
     const cardWrapper = card.parentNode;
-    const originColumn = getTargetParentByClassName(card, "column-wrapper");
+    const originColumn = getTargetParent(card, "column-wrapper");
     const newCard = card.cloneNode(true);
     card.style.opacity = "0.5";
     card.classList.add("afterimage");
@@ -103,6 +103,7 @@ const dragNdrop = () => {
           newCard.style = "";
           const targetColumn = document.getElementById(col.id);
           const cardsAvailable = targetColumn.querySelectorAll(".card-wrapper");
+          //debugger;
           const targetColName = targetColumn.querySelector(
             ".column-header-title"
           ).innerHTML;

@@ -1,8 +1,7 @@
 import {
-  getTargetParentByClassName,
+  getTargetParent,
   getElem,
   getElems,
-  cardsBackgroundColorToggle,
   cardCountChecker,
 } from "../utils/utils.js";
 import { Logs } from "../stores/Logs.js";
@@ -10,6 +9,7 @@ import {
   cardRightBtnsBackgroundChange,
   cardRightBtnToggle,
   toggleClassNamedFadeoutCol,
+  cardsBackgroundColorToggle,
 } from "../utils/styles.js";
 import { store } from "../init.js";
 
@@ -27,10 +27,7 @@ const removeBtnClickEventHandler = () => {
   const removedData = getElem(".card-title", focusedCard).textContent;
   const bodyEl = document.body;
   const logWrapper = getElem(".log-wrapper");
-  const columnWrapper = getTargetParentByClassName(
-    focusedCard,
-    "column-wrapper"
-  );
+  const columnWrapper = getTargetParent(focusedCard, "column-wrapper");
   const colHeaderEl = getElem(".column-header-title", columnWrapper).innerHTML;
   cardsBackgroundColorToggle();
   new Logs(logWrapper, colHeaderEl, removedData, "REMOVE");
