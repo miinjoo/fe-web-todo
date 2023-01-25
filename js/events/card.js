@@ -31,9 +31,12 @@ const logWrapper = getElem(".log-wrapper");
 
 const cardAddBtnClickEventHandler = ({ target }) => {
   if (target.className !== "column-add-btn") return;
-  const targetColumn = getTargetParent(target, "column-wrapper");
+  const targetColumn = getTargetParent(target, "column-header-wrapper");
   target.classList.add("active");
-  targetColumn.innerHTML += newCardWrapper({ id: "newCardInput" });
+  targetColumn.insertAdjacentHTML(
+    "afterend",
+    newCardWrapper({ id: "newCardInput" })
+  );
 };
 
 const cardAddBtnConfirmEventHandler = ({ target }) => {
@@ -42,6 +45,7 @@ const cardAddBtnConfirmEventHandler = ({ target }) => {
   const columnId = targetColumn.getAttribute("id");
   const newCardInputEl = getElem("#newCardInput");
   const columnName = getElem(".column-header-title", targetColumn);
+  const targetCardsWrapper = getElem(".cards-wrapper", targetColumn);
   const newInputData = [...newCardInputEl.children]
     .filter((v) => v.tagName === "INPUT")
     .map((v) => v.value);
@@ -61,7 +65,10 @@ const cardAddBtnConfirmEventHandler = ({ target }) => {
   };
   store.addItems(newCardItem);
   addCardDataToServer(newCardItem);
-  targetColumn.innerHTML += cardWrapper({ title, text, id });
+  targetCardsWrapper.insertAdjacentHTML(
+    "afterbegin",
+    cardWrapper({ title, text, id })
+  );
   new Logs(logWrapper, columnName.innerHTML, title, "ADD");
   cardCountChecker();
 };
