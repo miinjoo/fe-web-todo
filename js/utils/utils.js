@@ -21,8 +21,6 @@ const getElems = (attributes, start = document.body) => {
   const { toFind, attr } = elementSeparator(attributes);
   const elementsArr = [];
   const queue = [start];
-  const visited = {};
-  visited[start] = true;
   while (queue.length) {
     for (let i = 0; i < queue.length; i = i + 1) {
       const parent = queue.shift();
@@ -30,7 +28,6 @@ const getElems = (attributes, start = document.body) => {
         if (String(child.getAttribute(toFind)).includes(attr))
           elementsArr.push(child);
         else {
-          visited[child] = true;
           queue.push(child);
         }
       }
@@ -42,15 +39,12 @@ const getElems = (attributes, start = document.body) => {
 const getElem = (attributes, start = document.body) => {
   const { toFind, attr } = elementSeparator(attributes);
   const queue = [start];
-  const visited = {};
-  visited[start] = true;
   while (queue.length) {
     for (let i = 0; i < queue.length; i = i + 1) {
       const parent = queue.shift();
       for (const child of parent.children) {
         if (String(child.getAttribute(toFind)).includes(attr)) return child;
         else {
-          visited[child] = true;
           queue.push(child);
         }
       }
@@ -63,10 +57,6 @@ const deleteNode = (query) => {
   getElem(`${query}`).remove();
 };
 
-const addClsssName = (node, className) => {
-  node.classList.add(className);
-};
-
 const cardCountChecker = () => {
   const columns = document.querySelectorAll(".column-wrapper");
   for (const column of columns) {
@@ -76,35 +66,10 @@ const cardCountChecker = () => {
   }
 };
 
-const cardsBackgroundColorToggle = () => {
-  const columnsEl = getElem(".columns-wrapper");
-  const cards = getElems(".card-wrapper", columnsEl);
-  const cardBtns = getElems(".card-remove-btn");
-  cardBtns.concat(getElems(".card-fix-btn"));
-  cards.forEach((card) => {
-    if (!String(card.getAttribute("class")).includes("clicked")) {
-      card.classList.toggle("fadeout-card");
-    }
-  });
-  cardBtns.forEach((btn) => {
-    if (
-      String(
-        getTargetParentByClassName(btn, "card-wrapper")
-          .getAttribute("class")
-          .includes("fadeout-card")
-      )
-    ) {
-      btn.classList.toggle("fadeout-card");
-    }
-  });
-};
-
 export {
   getTargetParentByClassName,
   deleteNode,
-  addClsssName,
   getElem,
   getElems,
-  cardsBackgroundColorToggle,
   cardCountChecker,
 };

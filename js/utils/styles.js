@@ -1,4 +1,4 @@
-import { getElem, getElems } from "./utils.js";
+import { getElem, getElems, getTargetParentByClassName } from "./utils.js";
 
 const cardRightBtnsBackgroundChange = (removeBtn, editBtn, color) => {
   removeBtn.style.backgroundColor = color;
@@ -26,9 +26,33 @@ const toggleClassNamedFadeoutCol = () => {
   removeBtns.forEach((ele) => ele.classList.toggle("fadeout-col"));
 };
 
+const cardsBackgroundColorToggle = () => {
+  const columnsEl = getElem(".columns-wrapper");
+  const cards = getElems(".card-wrapper", columnsEl);
+  const cardBtns = getElems(".card-remove-btn");
+  cardBtns.concat(getElems(".card-fix-btn"));
+  cards.forEach((card) => {
+    if (!String(card.getAttribute("class")).includes("clicked")) {
+      card.classList.toggle("fadeout-card");
+    }
+  });
+  cardBtns.forEach((btn) => {
+    if (
+      String(
+        getTargetParentByClassName(btn, "card-wrapper")
+          .getAttribute("class")
+          .includes("fadeout-card")
+      )
+    ) {
+      btn.classList.toggle("fadeout-card");
+    }
+  });
+};
+
 export {
   cardRightBtnsBackgroundChange,
   cardRightBtnToggle,
   removeClassNameActive,
   toggleClassNamedFadeoutCol,
+  cardsBackgroundColorToggle,
 };
