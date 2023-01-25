@@ -1,4 +1,4 @@
-import { getElem } from "./utils.js";
+import { getElem, cardCountChecker } from "./utils.js";
 import { cardWrapper } from "../components/card.js";
 
 const cardUlr = "http://localhost:3000/cards";
@@ -78,6 +78,7 @@ const initJSONdata = async () => {
       id: "card-" + card.id,
     });
   }
+  cardCountChecker();
 };
 
 export {
