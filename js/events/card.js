@@ -22,7 +22,11 @@ import {
   removeClassNameActive,
   toggleClassNamedFadeoutCol,
 } from "../utils/styles.js";
-import { addCardDataToServer, modifyCardDataInServer } from "../utils/fetch.js";
+import {
+  addCardDataToServer,
+  getCardDataFromServer,
+  modifyCardDataInServer,
+} from "../utils/fetch.js";
 
 const logWrapper = getElem(".log-wrapper");
 
@@ -53,7 +57,6 @@ const cardAddBtnConfirmEventHandler = (e) => {
     store.updateCardId();
     const id = "card-" + String(store.getCardId());
     const newCardItem = {
-      id,
       standing: columnId,
       title,
       contents: text,
@@ -113,12 +116,12 @@ const cardModificationEventHandler = (e) => {
   }
 };
 
-const cardModificationCancelBtnHandler = (e) => {
+const cardModificationCancelBtnHandler = async (e) => {
   if (e.target.className === "card-fix-cancel-btn") {
     const cardEl = getTargetParentByClassName(e.target, "fixing");
     const cardId = cardEl.getAttribute("id");
-    const originData = store.getDatas();
-    const parsedData = originData.find((ele) => ele.id === cardId);
+    const originData = await getCardDataFromServer();
+    const parsedData = originData.find((ele) => "card-" + ele.id === cardId);
     cardEl.innerHTML = fixedWrapper({
       title: parsedData.title,
       text: parsedData.contents,
@@ -139,7 +142,13 @@ const cardModificationSubmittnHandler = (e) => {
       .map((v) => v.value);
     const [title, text] = newInputData;
     store.modifyDataFromEdit(cardId, title, text);
-    modifyCardDataInServer(cardId, { cardId, standing, title, text });
+    const cardIdForServer = cardId.slice(5);
+    modifyCardDataInServer(cardIdForServer, {
+      cardIdForServer,
+      standing,
+      title,
+      text,
+    });
     cardEl.innerHTML = fixedWrapper({ title, text });
     cardEl.classList.remove("fixing");
     new Logs(logWrapper, columnName.innerHTML, title, "FIX");
