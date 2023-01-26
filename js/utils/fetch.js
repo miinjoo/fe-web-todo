@@ -1,11 +1,12 @@
 import { getElem, cardCountChecker } from "./utils.js";
 import { cardWrapper } from "../components/card.js";
+import { SERVER_URL } from "./URL.js";
 
-const cardUlr = "http://localhost:3000/cards";
-const logsUlr = "http://localhost:3000/logs";
+const CARD_URL = SERVER_URL + "/cards";
+const LOGS_URL = SERVER_URL + "/logs";
 
 const addCardDataToServer = async (cardData) => {
-  const response = await fetch(cardUlr, {
+  const response = await fetch(CARD_URL, {
     method: "post",
     headers: {
       "Content-Type": "application/json",
@@ -16,7 +17,7 @@ const addCardDataToServer = async (cardData) => {
 };
 
 const addLogsDataToServer = async (logData) => {
-  const response = await fetch(logsUlr, {
+  const response = await fetch(LOGS_URL, {
     method: "post",
     headers: {
       "Content-Type": "application/json",
@@ -27,7 +28,7 @@ const addLogsDataToServer = async (logData) => {
 };
 
 const modifyCardDataInServer = async (cardId, cardData) => {
-  const url = cardUlr + `/${cardId}`;
+  const url = CARD_URL + `/${cardId}`;
   const response = await fetch(url, {
     method: "put",
     headers: {
@@ -39,7 +40,7 @@ const modifyCardDataInServer = async (cardId, cardData) => {
 };
 
 const getCardDataFromServer = async () => {
-  const cardDataResponse = await fetch(cardUlr, {
+  const cardDataResponse = await fetch(CARD_URL, {
     method: "get",
     headers: {
       "Content-Type": "application/json",
@@ -51,7 +52,7 @@ const getCardDataFromServer = async () => {
 };
 
 const removeCardDataFromServer = async (cardId) => {
-  const url = cardUlr + `/${cardId}`;
+  const url = CARD_URL + `/${cardId}`;
   const response = await fetch(url, {
     method: "delete",
     headers: {

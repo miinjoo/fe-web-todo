@@ -52,31 +52,7 @@ const dragNdrop = () => {
         column.appendChild(afterImagedCard);
         return;
       }
-
-      if (event.clientY < NUMBERS.BASETOP) {
-        column.insertBefore(afterImagedCard, cards[0]);
-        return;
-      }
-      if (event.clientY > NUMBERS.BASETOP + NUMBERS.CARDHEIGHT * cards.length) {
-        column.appendChild(afterImagedCard);
-        return;
-      }
-
-      for (let i = 0; i < cards.length; i = i + 1) {
-        const currentCardHeight =
-          NUMBERS.BASETOP + NUMBERS.CARDHEIGHT * i + NUMBERS.CARDHEIGHT / 2;
-        if (
-          NUMBERS.BASETOP + NUMBERS.CARDHEIGHT * i < event.clientY &&
-          event.clientY < NUMBERS.BASETOP + NUMBERS.CARDHEIGHT * (i + 1)
-        ) {
-          if (currentCardHeight < event.clientY) {
-            cards[i].after(afterImagedCard);
-          } else {
-            column.insertBefore(afterImagedCard, cards[i]);
-            //before로 바꿔도 됨
-          }
-        }
-      }
+      calculateCardPosition(event.clientY, column, afterImagedCard, cards);
     }
 
     document.addEventListener("mousemove", onMouseMove);
@@ -109,32 +85,13 @@ const dragNdrop = () => {
             reorderAllCards();
             return;
           }
+          calculateCardPosition(
+            axis.top,
+            targetColumn,
+            newCard,
+            cardsAvailable
+          );
 
-          if (axis.top < NUMBERS.BASETOP) {
-            targetColumn.insertBefore(newCard, cardsAvailable[0]);
-          } else if (
-            axis.top >
-            NUMBERS.BASETOP + NUMBERS.CARDHEIGHT * cardsAvailable.length
-          ) {
-            targetColumn.appendChild(newCard);
-          } else {
-            for (let i = 0; i < cardsAvailable.length; i = i + 1) {
-              const currentCardHeight =
-                NUMBERS.BASETOP +
-                NUMBERS.CARDHEIGHT * i +
-                NUMBERS.CARDHEIGHT / 2;
-              if (
-                NUMBERS.BASETOP + NUMBERS.CARDHEIGHT * i < axis.top &&
-                axis.top < NUMBERS.BASETOP + NUMBERS.CARDHEIGHT * (i + 1)
-              ) {
-                if (currentCardHeight < axis.top) {
-                  cardsAvailable[i].after(newCard);
-                } else {
-                  targetColumn.insertBefore(newCard, cardsAvailable[i]);
-                }
-              }
-            }
-          }
           reorderAllCards();
           if (targetColName === originColName) return;
           store.modifyDataFromDrag(newCard.id, targetColumn.id);
@@ -172,6 +129,33 @@ const reorderAllCards = async () => {
     }
   }
 };
+
+function calculateCardPosition(YCoordinate, targetColumn, newCard, cardArr) {
+  if (YCoordinate < NUMBERS.BASETOP) {
+    targetColumn.insertBefore(newCard, cardArr[0]);
+    return;
+  }
+
+  if (YCoordinate > NUMBERS.BASETOP + NUMBERS.CARDHEIGHT * cardArr.length) {
+    targetColumn.appendChild(newCard);
+    return;
+  }
+
+  for (let i = 0; i < cardArr.length; i = i + 1) {
+    const currentCardHeight =
+      NUMBERS.BASETOP + NUMBERS.CARDHEIGHT * i + NUMBERS.CARDHEIGHT / 2;
+    if (
+      NUMBERS.BASETOP + NUMBERS.CARDHEIGHT * i < YCoordinate &&
+      YCoordinate < NUMBERS.BASETOP + NUMBERS.CARDHEIGHT * (i + 1)
+    ) {
+      if (currentCardHeight < YCoordinate) {
+        cardArr[i].after(newCard);
+      } else {
+        targetColumn.insertBefore(newCard, cardArr[i]);
+      }
+    }
+  }
+}
 
 function moveAt(newCard, pageX, pageY) {
   newCard.style.left = pageX - newCard.offsetWidth / 2 + "px";
