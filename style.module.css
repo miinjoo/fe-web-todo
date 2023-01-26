@@ -129,7 +129,7 @@ button:hover {
 }
 
 .column-remove-btn:hover path {
-  fill: red;
+  fill: #ff0000;
 }
 
 .card-remove-btn {
@@ -139,7 +139,7 @@ button:hover {
 }
 
 .card-remove-btn:hover path {
-  fill: red;
+  fill: #ff0000;
 }
 
 .card-remove-btn.clicked {
@@ -172,7 +172,7 @@ button:hover {
 
 .card-wrapper.mouse-on,
 .card-wrapper.clicked {
-  border: 1px solid red;
+  border: 1px solid #ff0000;
   background-color: #ffeeec;
 }
 
@@ -281,52 +281,23 @@ button:hover {
 
 /* Log */
 
-@keyframes fadeInRight {
-  0% {
-    opacity: 0;
-    transform: translate3d(100%, 0, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translateZ(0);
-  }
-}
-
-@keyframes fadeOutLeft {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-    transform: translate3d(100%, 0, 0);
-  }
-}
-
 .log-wrapper {
-  position: absolute;
+  background: #fff;
+  width: 585px;
+  position: fixed;
   top: 0;
-  right: 1px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  width: 600px;
+  right: -585px;
   height: 750px;
-  padding: 40px;
-  padding-top: 150px;
+  transition: all 1s ease-out;
   z-index: 1;
-  background-color: white;
-  display: block;
-  animation: fadeInRight 1s;
+  padding-top: 150px;
+  flex-direction: column;
+  align-items: center;
+  display: flex;
 }
 
 .log-wrapper.hidden {
-  /* display: none; */
-  opacity: 0;
-}
-
-.log-wrapper.disappear {
-  animation: fadeOutLeft 1s;
-  animation-fill-mode: forwards;
+  right: 0;
 }
 
 .log-card-wrapper {
@@ -433,7 +404,7 @@ button:hover {
   box-shadow: 0px 0px 4px rgba(204, 204, 204, 0.5),
     0px 2px 4px rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(2px);
-  color: white;
+  color: #fff;
   text-align: center;
   font-size: 40px;
 }

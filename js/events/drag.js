@@ -21,6 +21,7 @@ const dragNdrop = () => {
     const cardWrapper = card.parentNode;
     const originColumn = getTargetParent(card, "column-wrapper");
     const newCard = card.cloneNode(true);
+
     card.style.opacity = "0.5";
     card.classList.add("afterimage");
     newCard.style.zIndex = 100;
@@ -31,15 +32,11 @@ const dragNdrop = () => {
     const afterImagedCard = card.cloneNode(true);
     afterImagedCard.classList.add("afterImage");
     card.remove();
-    function moveAt(pageX, pageY) {
-      newCard.style.left = pageX - newCard.offsetWidth / 2 + "px";
-      newCard.style.top = pageY - newCard.offsetHeight / 2 + "px";
-    }
 
-    moveAt(event.pageX, event.pageY);
+    moveAt(newCard, event.pageX, event.pageY);
 
     function onMouseMove(event) {
-      moveAt(event.pageX, event.pageY);
+      moveAt(newCard, event.pageX, event.pageY);
       const temp = document.querySelector(".afterImage");
       if (temp) temp.remove();
       newCard.style.pointerEvents = "none";
@@ -55,9 +52,8 @@ const dragNdrop = () => {
         column.appendChild(afterImagedCard);
         return;
       }
-      const BASETOP = 131;
-      const CARDHEIGHT = 108;
-      if (event.clientY < BASETOP) {
+
+      if (event.clientY < NUMBERS.BASETOP) {
         column.insertBefore(afterImagedCard, cards[0]);
         return;
       }
@@ -70,8 +66,8 @@ const dragNdrop = () => {
         const currentCardHeight =
           NUMBERS.BASETOP + NUMBERS.CARDHEIGHT * i + NUMBERS.CARDHEIGHT / 2;
         if (
-          BASETOP + CARDHEIGHT * i < event.clientY &&
-          event.clientY < BASETOP + CARDHEIGHT * (i + 1)
+          NUMBERS.BASETOP + NUMBERS.CARDHEIGHT * i < event.clientY &&
+          event.clientY < NUMBERS.BASETOP + NUMBERS.CARDHEIGHT * (i + 1)
         ) {
           if (currentCardHeight < event.clientY) {
             cards[i].after(afterImagedCard);
@@ -114,19 +110,22 @@ const dragNdrop = () => {
             return;
           }
 
-          const BASETOP = 131;
-          const CARDHEIGHT = 108;
-          if (axis.top < BASETOP) {
+          if (axis.top < NUMBERS.BASETOP) {
             targetColumn.insertBefore(newCard, cardsAvailable[0]);
-          } else if (axis.top > BASETOP + CARDHEIGHT * cardsAvailable.length) {
+          } else if (
+            axis.top >
+            NUMBERS.BASETOP + NUMBERS.CARDHEIGHT * cardsAvailable.length
+          ) {
             targetColumn.appendChild(newCard);
           } else {
             for (let i = 0; i < cardsAvailable.length; i = i + 1) {
               const currentCardHeight =
-                BASETOP + CARDHEIGHT * i + CARDHEIGHT / 2;
+                NUMBERS.BASETOP +
+                NUMBERS.CARDHEIGHT * i +
+                NUMBERS.CARDHEIGHT / 2;
               if (
-                BASETOP + CARDHEIGHT * i < axis.top &&
-                axis.top < BASETOP + CARDHEIGHT * (i + 1)
+                NUMBERS.BASETOP + NUMBERS.CARDHEIGHT * i < axis.top &&
+                axis.top < NUMBERS.BASETOP + NUMBERS.CARDHEIGHT * (i + 1)
               ) {
                 if (currentCardHeight < axis.top) {
                   cardsAvailable[i].after(newCard);
@@ -173,5 +172,10 @@ const reorderAllCards = async () => {
     }
   }
 };
+
+function moveAt(newCard, pageX, pageY) {
+  newCard.style.left = pageX - newCard.offsetWidth / 2 + "px";
+  newCard.style.top = pageY - newCard.offsetHeight / 2 + "px";
+}
 
 export { dragNdrop };

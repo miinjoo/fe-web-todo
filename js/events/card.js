@@ -61,12 +61,12 @@ const cardAddBtnConfirmEventHandler = ({ target }) => {
   const newCardItem = {
     standing: columnId,
     title,
-    contents: text,
+    text,
   };
   store.addItems(newCardItem);
   addCardDataToServer(newCardItem);
   targetCardsWrapper.insertAdjacentHTML(
-    "afterbegin",
+    "beforeend",
     cardWrapper({ title, text, id })
   );
   new Logs(logWrapper, columnName.innerHTML, title, "ADD");
@@ -120,7 +120,8 @@ const cardModificationCancelBtnHandler = async ({ target }) => {
   const cardEl = getTargetParent(target, "fixing");
   const cardId = cardEl.getAttribute("id");
   const originData = await getCardDataFromServer();
-  const parsedData = originData.find((ele) => "card-" + ele.id == cardId);
+  const parsedData = originData.find((el) => "card-" + el.id == cardId);
+
   cardEl.innerHTML = fixedWrapper({
     title: parsedData.title,
     text: parsedData.text,
@@ -141,6 +142,7 @@ const cardModificationSubmittnHandler = ({ target }) => {
   const [title, text] = newInputData;
   store.modifyDataFromEdit(cardId, title, text);
   const cardIdForServer = cardId.slice(5);
+
   modifyCardDataInServer(cardIdForServer, {
     id: cardIdForServer,
     standing,

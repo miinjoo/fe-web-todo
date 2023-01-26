@@ -8,12 +8,12 @@ class Store {
     this.#cardId = 0;
   }
 
-  addItems({ id, standing, title, contents }) {
+  addItems({ id, standing, title, text }) {
     const obj = {
       id,
       standing,
       title,
-      contents,
+      text,
       time: generateTime(),
       status: true,
     };
@@ -21,24 +21,24 @@ class Store {
   }
 
   findObjectById(id) {
-    return this.#datas.filter((elem) => elem.id === id);
+    return this.#datas.filter((el) => el.id === id);
   }
 
   removeObjectById(id) {
-    this.#datas = this.#datas.filter((ele) => ele.id !== id);
+    this.#datas = this.#datas.filter((el) => el.id !== id);
   }
 
-  modifyDataFromEdit(id, title, contents) {
-    const idx = this.#datas.findIndex((ele) => ele.id === id);
+  modifyDataFromEdit(id, title, text) {
+    const idx = this.#datas.findIndex((el) => el.id === id);
     this.#datas[idx] = {
       ...this.#datas[idx],
       title,
-      contents,
+      text,
     };
   }
 
   modifyDataFromDrag(id, standing) {
-    const idx = this.#datas.findIndex((ele) => ele.id === id);
+    const idx = this.#datas.findIndex((el) => el.id === id);
     this.#datas[idx] = {
       ...this.#datas[idx],
       standing,

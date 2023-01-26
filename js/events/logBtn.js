@@ -14,8 +14,8 @@ const logSgvChange = () => {
 
 const logBtnClickEvent = () => {
   headerRightBtn.addEventListener("click", () => {
+    console.log(logWrapper.classList);
     logWrapper.classList.toggle("hidden");
-    logWrapper.classList.toggle("disappear");
     headerRightBtn.classList.toggle("hidden");
     logSgvChange();
   });
