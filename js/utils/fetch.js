@@ -27,7 +27,7 @@ const addLogsDataToServer = async (logData) => {
 };
 
 const modifyCardDataInServer = async (cardId, cardData) => {
-  const url = `http://localhost:3000/cards/${cardId}`;
+  const url = cardUlr + `/${cardId}`;
   const response = await fetch(url, {
     method: "put",
     headers: {
@@ -51,7 +51,7 @@ const getCardDataFromServer = async () => {
 };
 
 const removeCardDataFromServer = async (cardId) => {
-  const url = `http://localhost:3000/cards/${cardId}`;
+  const url = cardUlr + `/${cardId}`;
   const response = await fetch(url, {
     method: "delete",
     headers: {
@@ -64,7 +64,7 @@ const removeCardDataFromServer = async (cardId) => {
 
 const refeshJSONdata = async () => {
   const cardData = await getCardDataFromServer();
-  const cardIds = cardData.map((ele) => ele.id);
+  const cardIds = cardData.map((el) => el.id);
   cardIds.forEach((id) => removeCardDataFromServer(id));
 };
 
